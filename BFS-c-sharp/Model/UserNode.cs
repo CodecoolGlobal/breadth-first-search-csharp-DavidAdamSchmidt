@@ -90,6 +90,45 @@ namespace BFS_c_sharp.Model
             return collected;
         }
 
+        public List<List<string>> GetShortestPaths(string userId)
+        {
+            var paths = new List<List<string>>();
+            var currentPath = new Stack<UserNode>();
+            currentPath.Push(this);
+            var distance = GetDistanceFromUser(userId);
+
+            if (distance != null)
+            {
+                FillPathList(this);
+            }
+
+            return paths;
+
+            void FillPathList(UserNode currentNode)
+            {
+                foreach (var friend in currentNode.Friends.Where(f => !currentPath.Contains(f)))
+                {
+                    if (currentPath.Count > distance)
+                    {
+                        break;
+                    }
+                    currentPath.Push(friend);
+                    if (friend.Id == userId)
+                    {
+                        paths.Add(currentPath.Reverse().Select(node => node.ToString()).ToList());
+                        currentPath.Pop();
+                        break;
+                    }
+                    FillPathList(friend);
+                }
+
+                if (currentPath.Count > 0)
+                {
+                    currentPath.Pop();
+                }
+            }
+        }
+
         public override string ToString()
         {
             return FirstName + " " + LastName + "(" + Friends.Count + ")";
