@@ -16,12 +16,12 @@ namespace BFS_c_sharp
 
             Console.WriteLine("\n--- GetDistanceFromUser ---");
             var user1 = users[0];
-            var user2 = users[7];
+            var user2 = users[11];
             var distance = user1.GetDistanceFromUser(user2.Id);
             Console.WriteLine($"The distance between {user1} and {user2} is {distance ?? -1}");
 
             Console.WriteLine("\n--- GetFriendsOfFriends ---");
-            distance = 1;
+            distance = 2;
             var friendsOfFriends = user1.GetFriendsOfFriends((int) distance);
             Console.WriteLine($"Friends of friends of {user1} at distance {distance}:");
             Console.WriteLine(string.Join(", ", friendsOfFriends));

@@ -41,17 +41,18 @@ namespace BFS_c_sharp.Model
 
             while (toCheck.Count > 0)
             {
-                var node = toCheck.Dequeue();
-                visited.Add(node);
+                var currentNode = toCheck.Dequeue();
 
-                if (node.Id == userId)
+                if (currentNode.Id == userId)
                 {
                     return distance;
                 }
 
-                foreach (var friend in node.Friends.Where(friend => !visited.Contains(friend)))
+                visited.Add(currentNode);
+
+                foreach (var user in currentNode.Friends.Where(friend => !visited.Contains(friend)))
                 {
-                    toCheck.Enqueue(friend);
+                    toCheck.Enqueue(user);
                 }
 
                 if (--nodesLeftOnLevel == 0)
@@ -74,11 +75,11 @@ namespace BFS_c_sharp.Model
             {
                 var temp = new HashSet<UserNode>();
 
-                foreach (var friend in toCheck.SelectMany(n => n.Friends))
+                foreach (var user in toCheck.SelectMany(node => node.Friends))
                 {
-                    if (friend != this && !collected.Contains(friend))
+                    if (user != this && !collected.Contains(user))
                     {
-                        temp.Add(friend);
+                        temp.Add(user);
                     }
                 }
 
@@ -106,20 +107,23 @@ namespace BFS_c_sharp.Model
 
             void FillPathList(UserNode currentNode)
             {
-                foreach (var friend in currentNode.Friends.Where(f => !currentPath.Contains(f)))
+                foreach (var user in currentNode.Friends.Where(friend => !currentPath.Contains(friend)))
                 {
                     if (currentPath.Count > distance)
                     {
                         break;
                     }
-                    currentPath.Push(friend);
-                    if (friend.Id == userId)
+
+                    currentPath.Push(user);
+
+                    if (user.Id == userId)
                     {
                         paths.Add(currentPath.Reverse().Select(node => node.ToString()).ToList());
                         currentPath.Pop();
                         break;
                     }
-                    FillPathList(friend);
+
+                    FillPathList(user);
                 }
 
                 if (currentPath.Count > 0)
@@ -131,7 +135,7 @@ namespace BFS_c_sharp.Model
 
         public override string ToString()
         {
-            return FirstName + " " + LastName + "(" + Friends.Count + ")";
+            return $"{FirstName} {LastName}({Friends.Count})";
         }
     }
 }
