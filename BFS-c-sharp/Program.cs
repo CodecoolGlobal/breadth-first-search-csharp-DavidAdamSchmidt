@@ -1,15 +1,13 @@
-﻿using BFS_c_sharp.Model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace BFS_c_sharp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            RandomDataGenerator generator = new RandomDataGenerator();
-            List<UserNode> users = generator.Generate();
+            var generator = new RandomDataGenerator();
+            var users = generator.Generate();
 
             foreach (var user in users)
             {

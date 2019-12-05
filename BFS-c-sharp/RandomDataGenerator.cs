@@ -6,27 +6,26 @@ namespace BFS_c_sharp
 {
     public class RandomDataGenerator
     {
-        private Random rng = new Random(1234);
-        private String[] firstNames = {
+        private readonly Random _rng = new Random(1234);
+        private readonly string[] _firstNames = {
             "Inez", "Emery", "Virginia", "Charissa", "Tyrone", "Ayanna", "Jena", "Ora",
             "Cooper", "Gareth", "Karleigh", "Aladdin", "Arden", "Pearl", "Mariko", "Hadley",
             "Tanya", "Madeline", "Naomi", "Maggie", "Kerry", "Elmo", "Wylie", "Alec",
             "Axel", "Belle", "Cally", "Theodore", "Emmanuel", "Christopher", "Olympia"};
-
-        private String[] lastNames =  {
+        private readonly string[] _lastNames =  {
             "Winifred", "Tanner", "Rajah", "Cedric", "Tyler", "Nicholas", "Abra", "Aurora",
             "Bryar", "Kibo", "Myles", "Hillary", "Lydia", "Dolan", "Lucian", "Prescott"
         };
 
         public List<UserNode> Generate()
         {
-            List<UserNode> users = new List<UserNode>();
-            UserNode firstUser = GenerateNewUser();
+            var users = new List<UserNode>();
+            var firstUser = GenerateNewUser();
             users.Add(firstUser);
             // first generate and connect users in a star shaped tree
             GenerateTree(firstUser, users, 4);
 
-            for (int i = 0; i < users.Count - 30; i++)
+            for (var i = 0; i < users.Count - 30; i++)
             {
                 if (i % 5 == 0)
                 {
@@ -44,9 +43,9 @@ namespace BFS_c_sharp
             {
                 return;
             }
-            for (int i = 0; i < depth; i++)
+            for (var i = 0; i < depth; i++)
             {
-                UserNode newUser = GenerateNewUser();
+                var newUser = GenerateNewUser();
                 user.AddFriend(newUser);
                 allUsers.Add(newUser);
                 GenerateTree(newUser, allUsers, depth - 1);
@@ -55,12 +54,12 @@ namespace BFS_c_sharp
 
         private UserNode GenerateNewUser()
         {
-            return new UserNode(GetRandomElement(firstNames), GetRandomElement(lastNames));
+            return new UserNode(GetRandomElement(_firstNames), GetRandomElement(_lastNames));
         }
 
         private string GetRandomElement(string[] array)
         {
-            return array[rng.Next(array.Length)];
+            return array[_rng.Next(array.Length)];
         }        
     }
 }
