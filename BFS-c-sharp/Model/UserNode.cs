@@ -1,18 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BFS_c_sharp.Model
 {
     public class UserNode
     {
-        public UserNode() { }
+        public UserNode()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
 
         public UserNode(string firstName, string lastName)
+            : this()
         {
             FirstName = firstName;
             LastName = lastName;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string FirstName { get; set; }
 
@@ -24,6 +30,38 @@ namespace BFS_c_sharp.Model
         {
             Friends.Add(friend);
             friend.Friends.Add(this);
+        }
+
+        public int? GetDistanceFromUser(string userId)
+        {
+            var toCheck = new Queue<UserNode>(Friends);
+            var visited = new HashSet<UserNode>();
+            var distance = 1;
+            var nodesLeftOnLevel = toCheck.Count;
+
+            while (toCheck.Count > 0)
+            {
+                var node = toCheck.Dequeue();
+                visited.Add(node);
+
+                if (node.Id == userId)
+                {
+                    return distance;
+                }
+
+                foreach (var friend in node.Friends.Where(friend => !visited.Contains(friend)))
+                {
+                    toCheck.Enqueue(friend);
+                }
+
+                if (--nodesLeftOnLevel == 0)
+                {
+                    distance++;
+                    nodesLeftOnLevel = toCheck.Count;
+                }
+            }
+
+            return null;
         }
 
         public override string ToString()

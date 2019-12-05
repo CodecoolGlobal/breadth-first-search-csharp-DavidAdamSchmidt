@@ -14,6 +14,11 @@ namespace BFS_c_sharp
                 Console.WriteLine(user);
             }
 
+            var user1 = users[0];
+            var user2 = users[7];
+            var distance = user1.GetDistanceFromUser(user2.Id);
+            Console.WriteLine($"The distance between {user1} and {user2} is {distance ?? -1}");
+
             Console.WriteLine("Done");
             Console.ReadKey();
         }
