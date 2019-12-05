@@ -64,6 +64,32 @@ namespace BFS_c_sharp.Model
             return null;
         }
 
+        public HashSet<UserNode> GetFriendsOfFriends(int distance)
+        {
+            var depth = 1;
+            var collected = new HashSet<UserNode>();
+            var toCheck = new HashSet<UserNode> { this };
+
+            while (depth <= distance)
+            {
+                var temp = new HashSet<UserNode>();
+
+                foreach (var friend in toCheck.SelectMany(n => n.Friends))
+                {
+                    if (friend != this && !collected.Contains(friend))
+                    {
+                        temp.Add(friend);
+                    }
+                }
+
+                collected.UnionWith(temp);
+                toCheck = temp;
+                depth++;
+            }
+
+            return collected;
+        }
+
         public override string ToString()
         {
             return FirstName + " " + LastName + "(" + Friends.Count + ")";

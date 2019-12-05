@@ -19,6 +19,12 @@ namespace BFS_c_sharp
             var distance = user1.GetDistanceFromUser(user2.Id);
             Console.WriteLine($"The distance between {user1} and {user2} is {distance ?? -1}");
 
+            distance = 1;
+            var friendsOfFriends = user1.GetFriendsOfFriends((int) distance);
+            Console.WriteLine($"Friends of friends of {user1} at distance {distance}:");
+            Console.WriteLine(string.Join(", ", friendsOfFriends));
+            Console.WriteLine($"Count: {friendsOfFriends.Count}");
+
             Console.WriteLine("Done");
             Console.ReadKey();
         }
